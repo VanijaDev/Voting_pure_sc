@@ -20,10 +20,14 @@ contract Whitelisted is Ownable {
         whitelist[_address] = true;
     }
     
-    function removeFromWhitelist(address _address) public onlyOwner {
+    function removeFromWhitelist(address _address) external onlyOwner {
         require(_address != address(0), "ERROR: address cannot be 0");
         require(whitelist[_address], "ERROR: address is not whitelisted");
         
         delete whitelist[_address];
     }
+    
+    function isWhitelisted(address _address) external view returns(bool) {
+        return whitelist[_address];
+    }   
 }

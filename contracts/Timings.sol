@@ -15,11 +15,15 @@ contract Timings {
    * @dev Constructor function.
    * @param _timings 0 - open time, 1 - close time
    */
-  constructor(uint256[] _timings) public {
+  constructor(uint256[] _timings) internal {
       validateTimings(_timings);
       openTime = _timings[0];
       closeTime = _timings[1];
       
+  }
+  
+  function updateClosing(uint256 _closing) external {
+      closeTime = _closing;
   }
   
   /**
