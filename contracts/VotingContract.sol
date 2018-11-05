@@ -1,12 +1,8 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.4.24;
 
 import "./Whitelisted.sol";
 import "./Timings.sol";
 import "./SafeMath.sol";
-
-//  TODO: timings remove updateClosing
-//  TODO: remove tests funcs
-//  TODO: whitelist -> external
 
 
 contract VotingContract is Whitelisted, Timings {
@@ -32,31 +28,6 @@ contract VotingContract is Whitelisted, Timings {
     modifier candidateExists(address _address) {
         require(candidateInfo[_address].age > 0, "ERROR: candidate does not exist");
         _;
-    }
-    
-    function testAddCandidates() public {
-        candidateInfo[address(0xdd870fa1b7c4700f2bd7f44238821c26f7392148)].addr = address(0xdd870fa1b7c4700f2bd7f44238821c26f7392148);
-        candidateInfo[address(0xdd870fa1b7c4700f2bd7f44238821c26f7392148)].name = "148";
-        candidateInfo[address(0xdd870fa1b7c4700f2bd7f44238821c26f7392148)].age = 148;
-        candidates.push(address(0xdd870fa1b7c4700f2bd7f44238821c26f7392148));
-        
-        candidateInfo[address(0x583031d1113ad414f02576bd6afabfb302140225)].addr = address(0x583031d1113ad414f02576bd6afabfb302140225);
-        candidateInfo[address(0x583031d1113ad414f02576bd6afabfb302140225)].name = "225";
-        candidateInfo[address(0x583031d1113ad414f02576bd6afabfb302140225)].age = 225;
-        candidates.push(address(0x583031d1113ad414f02576bd6afabfb302140225));
-        
-        candidateInfo[address(0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db)].addr = address(0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db);
-        candidateInfo[address(0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db)].name = "2db";
-        candidateInfo[address(0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db)].age = 2;
-        candidates.push(address(0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db));
-    }
-    
-    function testAddWhitelist() public {
-        super.addToWhitelist(address(0xca35b7d915458ef540ade6068dfe2f44e8fa733c));
-        super.addToWhitelist(address(0x14723a09acff6d2a60dcdf7aa4aff308fddc160c));
-        super.addToWhitelist(address(0x4b0897b0513fdc7c541b6d9d7e929c4e5364d2db));
-        super.addToWhitelist(address(0x583031d1113ad414f02576bd6afabfb302140225));
-        super.addToWhitelist(address(0xdd870fa1b7c4700f2bd7f44238821c26f7392148));
     }
     
     constructor(uint256[] _timings) Timings(_timings) public {}
