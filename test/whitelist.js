@@ -5,7 +5,6 @@ const Reverter = require("./helpers/reverter");
 
 contract('whitelist', function (accounts) {
   let votingContract;
-  const OWNER = accounts[0];
   const asserts = Asserts(assert);
 
   before("setup", async () => {
