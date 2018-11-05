@@ -1,4 +1,4 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.4.24;
 
 import "./Ownable.sol";
 
@@ -13,7 +13,7 @@ contract Whitelisted is Ownable {
         _;
     }
     
-    function addToWhitelist(address _address) public onlyOwner {
+    function addToWhitelist(address _address) external onlyOwner {
         require(_address != address(0), "ERROR: address cannot be 0");
         require(!whitelist[_address], "ERROR: address is already whitelisted");
         
