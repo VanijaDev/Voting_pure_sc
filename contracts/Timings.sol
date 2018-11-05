@@ -1,4 +1,4 @@
-pragma solidity ^0.4.25;
+pragma solidity ^0.4.24;
 
 
 contract Timings {
@@ -20,10 +20,6 @@ contract Timings {
       openTime = _timings[0];
       closeTime = _timings[1];
       
-  }
-  
-  function updateClosing(uint256 _closing) external {
-      closeTime = _closing;
   }
   
   /**
