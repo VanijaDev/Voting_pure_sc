@@ -3,4 +3,7 @@
 - [x] start & end time;
 - [x] check the percentage and number of votes per candidates per each campaign day
 - [x] ability to check a winner;
-- [ ] cover the SC with the tests and create a migration to deploy.
+- [x] cover the SC with the tests and create a migration to deploy.
+
+
+Unit tests: use babel for async JS.
