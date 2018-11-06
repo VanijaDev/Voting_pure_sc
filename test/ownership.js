@@ -7,6 +7,8 @@ contract('ownership', function (accounts) {
   let votingContract;
   const asserts = Asserts(assert);
 
+  const ADDR_1 = accounts[1];
+
   before("setup", async () => {
     votingContract = await VotingContract.deployed();
     await Reverter.snapshot();
@@ -18,13 +20,10 @@ contract('ownership', function (accounts) {
 
   describe.only("add candidate", () => {
     it("should verify owner is able to add candidate", async () => {
-      const ADDR_1 = accounts[1];
-
       await votingContract.addCandidate(ADDR_1, "ADDR_1", 111);
     });
 
     it("should verify not owner is not able to add candidate", async () => {
-      const ADDR_1 = accounts[1];
 
       await asserts.throws(votingContract.addCandidate(ADDR_1, "ADDR_1", 111, {
         from: ADDR_1
@@ -32,14 +31,10 @@ contract('ownership', function (accounts) {
     });
 
     it("should verify owner is able to call voterVoterFor()", async () => {
-      const ADDR_1 = accounts[1];
-
       await votingContract.voterVoterFor.call(ADDR_1);
     });
 
     it("should verify not owner is not able to call voterVoterFor()", async () => {
-      const ADDR_1 = accounts[1];
-
       await asserts.throws(votingContract.voterVoterFor(ADDR_1, {
         from: ADDR_1
       }));
