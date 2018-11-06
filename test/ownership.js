@@ -1,31 +1,36 @@
 const VotingContract = artifacts.require("./VotingContract.sol");
-const Asserts = require("./helpers/asserts");
-const Reverter = require("./helpers/reverter");
+import expectThrow from './helpers/expectThrow';
+import {
+  advanceBlock
+} from './helpers/advanceToBlock';
+import increaseTime, {
+  duration,
+  increaseTimeTo
+} from './helpers/increaseTime';
+import latestTime from './helpers/latestTime';
 
 
 contract('ownership', function (accounts) {
   let votingContract;
-  const asserts = Asserts(assert);
 
   const ADDR_1 = accounts[1];
 
-  before("setup", async () => {
-    votingContract = await VotingContract.deployed();
-    await Reverter.snapshot();
+  beforeEach("setup", async () => {
+    await advanceBlock();
+
+    const START_TIME = latestTime() + duration.minutes(1);
+    const FINISH_TIME = START_TIME + duration.minutes(1);;
+    votingContract = await VotingContract.new([START_TIME, FINISH_TIME]);
   });
 
-  afterEach("revert", async () => {
-    await Reverter.revert();
-  });
-
-  describe.only("add candidate", () => {
+  describe("add candidate", () => {
     it("should verify owner is able to add candidate", async () => {
       await votingContract.addCandidate(ADDR_1, "ADDR_1", 111);
     });
 
     it("should verify not owner is not able to add candidate", async () => {
 
-      await asserts.throws(votingContract.addCandidate(ADDR_1, "ADDR_1", 111, {
+      await expectThrow(votingContract.addCandidate(ADDR_1, "ADDR_1", 111, {
         from: ADDR_1
       }));
     });
@@ -35,7 +40,7 @@ contract('ownership', function (accounts) {
     });
 
     it("should verify not owner is not able to call voterVoterFor()", async () => {
-      await asserts.throws(votingContract.voterVoterFor(ADDR_1, {
+      await expectThrow(votingContract.voterVoterFor(ADDR_1, {
         from: ADDR_1
       }));
     });

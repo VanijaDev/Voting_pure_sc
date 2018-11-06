@@ -1,19 +1,24 @@
 const VotingContract = artifacts.require("./VotingContract.sol");
-const Asserts = require("./helpers/asserts");
-const Reverter = require("./helpers/reverter");
+import expectThrow from './helpers/expectThrow';
+import {
+  advanceBlock
+} from './helpers/advanceToBlock';
+import increaseTime, {
+  duration,
+  increaseTimeTo
+} from './helpers/increaseTime';
+import latestTime from './helpers/latestTime';
 
 
 contract('whitelist', function (accounts) {
   let votingContract;
-  const asserts = Asserts(assert);
 
-  before("setup", async () => {
-    votingContract = await VotingContract.deployed();
-    await Reverter.snapshot();
-  });
+  beforeEach("setup", async () => {
+    await advanceBlock();
 
-  afterEach("revert", async () => {
-    await Reverter.revert();
+    const START_TIME = latestTime() + duration.minutes(1);
+    const FINISH_TIME = START_TIME + duration.minutes(1);;
+    votingContract = await VotingContract.new([START_TIME, FINISH_TIME]);
   });
 
   describe("modify whitelist", () => {
@@ -36,7 +41,7 @@ contract('whitelist', function (accounts) {
     it("should throw if not owner tries to add to whitelist", async () => {
       const ADDR_1 = accounts[1];
 
-      await asserts.throws(votingContract.addToWhitelist(ADDR_1, {
+      await expectThrow(votingContract.addToWhitelist(ADDR_1, {
         from: ADDR_1
       }));
     });
@@ -45,9 +50,15 @@ contract('whitelist', function (accounts) {
       const ADDR_1 = accounts[1];
 
       await votingContract.addToWhitelist(ADDR_1);
-      await asserts.throws(votingContract.removeFromWhitelist(ADDR_1, {
+      await expectThrow(votingContract.removeFromWhitelist(ADDR_1, {
         from: ADDR_1
       }));
     });
   });
+
+  // describe.only("vote action", () => {
+  //   it("should validate cannot vote if not whitelisted", async () => {
+  //     await asserts.throws(votingContract.vote(ADDR_1));
+  //   });
+  // });
 });
